@@ -1,0 +1,691 @@
+<title>Para Ana</title>
+<style>
+  :root{
+    --bg: #142219;
+    --bg-deep: #0e1810;
+    --panel: #1c2c20;
+    --soil-1: #3a2717;
+    --soil-2: #201409;
+    --ink: #f6ead0;
+    --muted: #a9c0a4;
+    --muted-2: #7f9a7a;
+    --yellow: #f2c14e;
+    --yellow-light: #ffe08a;
+    --yellow-deep: #c98a20;
+    --stem: #5a8a67;
+    --stem-dark: #375440;
+    --blush: #e79a8d;
+    --hairline: rgba(246,234,208,0.14);
+  }
+
+  *{box-sizing:border-box;}
+
+  body{
+    background: radial-gradient(ellipse 120% 70% at 50% -10%, #1c3324 0%, var(--bg) 45%, var(--bg-deep) 100%);
+    color: var(--ink);
+    font-family: 'Literata', Georgia, 'Times New Roman', serif;
+  }
+
+  .page{
+    max-width: 480px;
+    margin: 0 auto;
+    padding: 44px 20px 72px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 22px;
+  }
+
+  .eyebrow{
+    font-family: 'Work Sans', system-ui, sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--muted-2);
+  }
+
+  .title{
+    font-family: 'Fraunces', Georgia, serif;
+    font-optical-sizing: auto;
+    font-weight: 600;
+    font-size: clamp(28px, 8vw, 38px);
+    text-align: center;
+    text-wrap: balance;
+    color: var(--ink);
+    margin: -6px 0 0;
+  }
+
+  .scene-wrap{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .scene-frame{
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    border-radius: 22px;
+    overflow: hidden;
+    box-shadow: 0 30px 60px -25px rgba(0,0,0,0.6), 0 0 0 1px var(--hairline);
+    position: relative;
+    background: var(--bg-deep);
+  }
+
+  #scene{
+    display: block;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+  }
+
+  #scene:focus-visible{
+    outline: 2px solid var(--yellow);
+    outline-offset: -2px;
+  }
+
+  .hint{
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 15px;
+    font-style: italic;
+    color: var(--muted);
+    text-align: center;
+    margin: 0;
+    min-height: 20px;
+    transition: opacity 0.42s ease;
+  }
+  .hint.is-hidden{ opacity: 0; }
+
+  .water-btn{
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: linear-gradient(180deg, #2a3d2c, #1c2c20);
+    border: 1px solid var(--hairline);
+    color: var(--yellow-light);
+    font-family: 'Work Sans', system-ui, sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    padding: 10px 18px;
+    border-radius: 999px;
+    cursor: pointer;
+    box-shadow: 0 10px 24px -12px rgba(0,0,0,0.6);
+    opacity: 0;
+    transform: translateY(6px) scale(0.96);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+    pointer-events: none;
+  }
+  .water-btn.is-visible{
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    pointer-events: auto;
+    animation: water-invite 1.8s ease-in-out infinite;
+  }
+  .water-btn:hover, .water-btn:focus-visible{ border-color: var(--yellow); }
+  .water-btn svg{ width: 16px; height: 16px; flex: none; }
+
+  @keyframes water-invite{
+    0%, 100% { transform: translateY(0) scale(1); }
+    50% { transform: translateY(-3px) scale(1.03); }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .water-btn.is-visible{ animation: none; }
+  }
+
+  .letter{
+    width: 100%;
+    background: linear-gradient(180deg, var(--panel), var(--bg-deep));
+    border: 1px solid var(--hairline);
+    border-radius: 18px;
+    padding: 30px 26px 28px;
+    opacity: 0;
+    transform: translateY(14px);
+    transition: opacity 0.9s ease, transform 0.9s ease;
+    pointer-events: none;
+  }
+  .letter.is-visible{
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+
+  .letter p{
+    font-size: 16.5px;
+    line-height: 1.68;
+    margin: 0 0 16px;
+    max-width: 65ch;
+  }
+  .letter p:first-of-type{
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 20px;
+    font-weight: 500;
+    color: var(--yellow-light);
+    margin-bottom: 18px;
+  }
+
+  .signoff{
+    font-family: 'Fraunces', Georgia, serif;
+    font-style: italic;
+    font-weight: 500;
+    font-size: 22px;
+    color: var(--yellow);
+    margin-top: 22px !important;
+  }
+
+  .replay{
+    display: block;
+    margin: 22px auto 0;
+    background: none;
+    border: none;
+    font-family: 'Work Sans', system-ui, sans-serif;
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted-2);
+    cursor: pointer;
+    padding: 8px;
+  }
+  .replay:hover, .replay:focus-visible{ color: var(--yellow); }
+
+  @media (prefers-reduced-motion: reduce){
+    .letter{ transition: opacity 0.3s ease; }
+  }
+</style>
+
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500&family=Literata:ital,wght@0,400;0,500;1,400&family=Work+Sans:wght@500;600&display=swap">
+
+<div class="page">
+  <p class="eyebrow">para mi miamor</p>
+  <h1 class="title">Una semilla, para ti</h1>
+
+  <div class="scene-wrap">
+    <div class="scene-frame">
+      <canvas id="scene" tabindex="0" role="img" aria-label="Escena interactiva: toca la semilla para verla crecer hasta formar un corazón de flores amarillas para mi miamor"></canvas>
+    </div>
+    <p class="hint" id="hint">toca la semilla para empezar</p>
+    <button class="water-btn" id="waterBtn" type="button" hidden>
+      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M12 3.5c2.6 3.3 5 6.4 5 9.3a5 5 0 0 1-10 0c0-2.9 2.4-6 5-9.3Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+        <path d="M9.3 13.2a2.7 2.7 0 0 0 2.7 2.7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+      </svg>
+      riégala
+    </button>
+  </div>
+
+  <section class="letter" id="letter" aria-hidden="true">
+    <p>Miamor,</p>
+    <p>Hay días en los que la distancia pesa más de lo normal, en los que te pienso tanto que me falta el aire, y hoy es uno de esos días en los que me hubiese gustado simplemente aparecer en tu puerta con un ramo de flores amarillas, de esas que sé que te gustan, y no decir nada, solo dártelas y abrazarte fuerte, fuerte, fuerte, tan fuerte como para que sintieras todo lo que no siempre sé decirte con palabras.</p>
+    <p>Antes de nada quiero darte las gracias, miamor, gracias de verdad, gracias por haberte cruzado en mi vida aquel 13 de enero de 2023 sin buscarlo ninguno de los dos, gracias por cada uno de estos 1.347 días desde entonces, y gracias sobre todo por haber sido, y por seguir siendo, mi flotador cuando me hundo. Porque eso eres tú para mí, aunque suene a frase manida, aunque suene a esas cosas que se dicen y ya está: mi flotador. La persona a la que agarrarme cuando todo lo demás se mueve. Y sé que llevo un tiempo sin demostrártelo como mereces, y eso no te lo voy a negar, pero no ha dejado de ser verdad ni un solo día.</p>
+    <p>Te echo de menos, miamor, te echo de menos muchísimo, más de lo que puedo meter en estas letras, más de lo que cabe en cualquier carta. Sé que ahora mismo estás cansada, que llevas encima más de lo que deberías, y lo entiendo, de verdad que lo entiendo, así que tómate el tiempo que necesites, que yo aquí sigo, esperándote con la misma paciencia con la que espero a que esta semillita se convierta en un corazón entero. No tienes que cargar también conmigo mientras estás así; solo tienes que saber que aquí sigo, quieto, esperando, sin irme a ningún sitio.</p>
+    <p>Y aunque ahora mismo no estemos juntos de forma oficial, aunque las cosas estén como están, para mí sigues siendo mi mundo entero, miamor, todo mi mundo, el único, y eso no ha cambiado ni un solo segundo, ni va a cambiar. Sigo queriéndote de aquí a la luna a pasitos de tortuga y volver a pasitos de caracol, como siempre te digo, porque contigo hasta el camino más lento merece la pena, y porque no hay prisa que valga cuando se trata de ti. El otro día, sin venir a cuento, le hablé de ti a un amigo, y me dijo que se me nota en la cara cuando hablo de ti, que se me cambia la voz; y tiene razón, miamor, se me cambia todo cuando hablo de ti, siempre se me ha notado y siempre se me va a notar.</p>
+    <p>Sé que a veces has dudado de lo que sientes para mí, de si de verdad te veo, de si de verdad te escucho, y quiero que hoy, aunque sea a través de una pantalla, te quede claro: te veo, pequeñaja, te veo entera, con tus días buenos y con tus días cansados, y no hay versión tuya que no quiera tener cerca. No eres un peso, no eres una carga, eres lo mejor que me ha pasado en la vida, y pienso demostrártelo con hechos, no solo con palabras bonitas en una web, aunque hoy me hayan salido bien las palabras bonitas.</p>
+    <p>He plantado esto para ti: una semilla que crece hasta formar un corazón, flor a flor, amarilla a amarilla, con la misma paciencia con la que espero cada día a que volvamos a estar cerca, porque así es como te quiero yo, miamor, poco a poco pero sin parar nunca, sin prisa pero sin rendirme jamás, hasta llenarlo entero, hasta llenarte entera de todo lo que a veces se queda atascado dentro de mí y no sale como debería.</p>
+    <p>Sé que a veces no lo demuestro como debería, y sé que eso pesa, y lo siento de verdad, de corazón, con todo lo que tengo. Pero quiero que lo sepas, que lo sepas de verdad: pase lo que pase, estemos como estemos, yo sigo aquí, pensando en ti a todas horas, contando los días para volver a verte, para volver a abrazarte como sé abrazarte, para volver a hacerte reír como sé que sé hacerlo, para no volver a dejar que dudes ni un solo segundo de lo mucho que significas para mí.</p>
+    <p class="signoff">Teamo, miamor. Teamo, pequeñaja. Teamo de aquí a la luna y volver, hoy, mañana y todos los días que me queden.</p>
+    <button class="replay" id="replay" type="button">volver a plantarla</button>
+  </section>
+</div>
+
+<script>
+(function(){
+  var canvas = document.getElementById('scene');
+  var ctx = canvas.getContext('2d');
+  var hint = document.getElementById('hint');
+  var letter = document.getElementById('letter');
+  var replayBtn = document.getElementById('replay');
+  var waterBtn = document.getElementById('waterBtn');
+  var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  var PHRASES = [
+    'flor a flor',
+    'poco a poco, sin prisa',
+    'cada pétalo, un poco de mí',
+    'con paciencia hasta llenarlo',
+    'para ti, siempre',
+    'te pienso desde aquí'
+  ];
+
+  var W = 0, H = 0, DPR = 1;
+  function resize(){
+    var rect = canvas.getBoundingClientRect();
+    DPR = Math.min(window.devicePixelRatio || 1, 2);
+    W = rect.width; H = rect.height;
+    canvas.width = Math.round(W * DPR);
+    canvas.height = Math.round(H * DPR);
+    ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+  }
+
+  // ---- geometry ----
+  function heartRaw(t){
+    var x = 16 * Math.pow(Math.sin(t), 3);
+    var y = 13 * Math.cos(t) - 5 * Math.cos(2*t) - 2 * Math.cos(3*t) - Math.cos(4*t);
+    return { x: x, y: y };
+  }
+  var T0 = Math.PI; // bottom tip of the heart, where the seed lands
+
+  function scene(){
+    var cx = W * 0.5;
+    var soilY = H * 0.86;
+    var scale = Math.min(W, H) * 0.0235;
+    var cy = soilY - 17.2 * scale; // shift so the tip sits near soilY
+    return { cx: cx, cy: cy, scale: scale, soilY: soilY };
+  }
+
+  function heartPoint(t, ringScale){
+    ringScale = ringScale || 1;
+    var s = scene();
+    var raw = heartRaw(t);
+    return {
+      x: s.cx + raw.x * s.scale * ringScale,
+      y: s.cy - raw.y * s.scale * ringScale
+    };
+  }
+
+  // ---- flower field (precomputed positions, recomputed via geometry each frame) ----
+  function seededRandom(seed){
+    var x = Math.sin(seed * 999.7) * 43758.5453;
+    return x - Math.floor(x);
+  }
+
+  var flowers = [];
+  (function buildFlowers(){
+    var rings = [1.0, 0.8, 0.6, 0.4, 0.18];
+    var counts = [36, 28, 20, 12, 5];
+    var idx = 0;
+    for (var r = 0; r < rings.length; r++){
+      var n = counts[r];
+      for (var i = 0; i < n; i++){
+        var t = (i / n) * Math.PI * 2 + T0 + seededRandom(idx * 3.1 + r) * 0.06;
+        flowers.push({
+          t: t,
+          ring: rings[r],
+          size: 0.78 + seededRandom(idx * 7.7) * 0.5,
+          rot: seededRandom(idx * 13.3) * Math.PI * 2,
+          delayOrder: idx
+        });
+        idx++;
+      }
+    }
+    // shuffle bloom order a bit so it doesn't fill ring by ring too mechanically
+    for (var k = flowers.length - 1; k > 0; k--){
+      var j = Math.floor(seededRandom(k * 5.5) * (k + 1));
+      var tmp = flowers[k]; flowers[k] = flowers[j]; flowers[j] = tmp;
+    }
+  })();
+
+  function drawFlower(x, y, r, rot, bloom){
+    if (bloom <= 0) return;
+    var petals = 6;
+    ctx.save();
+    ctx.translate(x, y);
+    ctx.scale(bloom, bloom);
+    for (var i = 0; i < petals; i++){
+      var a = rot + i * (Math.PI * 2 / petals);
+      ctx.save();
+      ctx.rotate(a);
+      ctx.translate(r * 0.5, 0);
+      var grad = ctx.createLinearGradient(-r*0.5, 0, r*0.5, 0);
+      grad.addColorStop(0, '#c98a20');
+      grad.addColorStop(1, '#ffe08a');
+      ctx.fillStyle = grad;
+      ctx.beginPath();
+      ctx.ellipse(0, 0, r * 0.5, r * 0.28, 0, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+    }
+    ctx.beginPath();
+    ctx.fillStyle = '#c98a20';
+    ctx.arc(0, 0, r * 0.32, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+  }
+
+  function drawLeaf(x, y, len, ang, flip){
+    ctx.save();
+    ctx.translate(x, y);
+    ctx.rotate(ang);
+    ctx.scale(flip ? -1 : 1, 1);
+    ctx.beginPath();
+    ctx.moveTo(0, 0);
+    ctx.quadraticCurveTo(len * 0.5, -len * 0.35, len, 0);
+    ctx.quadraticCurveTo(len * 0.5, len * 0.18, 0, 0);
+    ctx.fillStyle = '#5a8a67';
+    ctx.fill();
+    ctx.restore();
+  }
+
+  function drawSoil(moist){
+    moist = moist || 0;
+    var s = scene();
+    var grad = ctx.createRadialGradient(s.cx, s.soilY, 4, s.cx, s.soilY, W * 0.55);
+    grad.addColorStop(0, '#3a2717');
+    grad.addColorStop(1, '#150d07');
+    ctx.save();
+    ctx.beginPath();
+    ctx.ellipse(s.cx, s.soilY + H*0.03, W * 0.42, H * 0.075, 0, 0, Math.PI * 2);
+    ctx.fillStyle = grad;
+    ctx.fill();
+    ctx.beginPath();
+    ctx.ellipse(s.cx, s.soilY + H*0.006, W * 0.4, H * 0.028, 0, 0, Math.PI);
+    ctx.fillStyle = 'rgba(90,60,32,0.55)';
+    ctx.fill();
+    if (moist > 0){
+      ctx.beginPath();
+      ctx.ellipse(s.cx, s.soilY + H*0.02, W * 0.3, H * 0.05, 0, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(20,35,20,' + (0.35 * moist) + ')';
+      ctx.fill();
+    }
+    ctx.restore();
+  }
+
+  function drawDroplets(phaseElapsed){
+    var s = scene();
+    var startY = -H * 0.04;
+    var endY = s.soilY - H * 0.01;
+    var count = 6;
+    ctx.save();
+    for (var i = 0; i < count; i++){
+      var dropStart = i * 190;
+      var p = clamp01((phaseElapsed - dropStart) / 620);
+      if (p <= 0 || p >= 1) continue;
+      var ease = p * p;
+      var x = s.cx + (i - (count - 1) / 2) * (W * 0.028);
+      var y = startY + (endY - startY) * ease;
+      ctx.globalAlpha = 0.85 * (1 - Math.max(0, p - 0.85) * 6);
+      ctx.beginPath();
+      ctx.ellipse(x, y, W * 0.008, W * 0.013, 0, 0, Math.PI * 2);
+      ctx.fillStyle = '#a9d6d9';
+      ctx.fill();
+    }
+    ctx.restore();
+  }
+
+  function drawVine(progress){
+    if (progress <= 0) return;
+    var steps = Math.max(2, Math.floor(240 * progress));
+    ctx.save();
+    ctx.lineJoin = 'round';
+    ctx.lineCap = 'round';
+    ctx.strokeStyle = '#5a8a67';
+    ctx.beginPath();
+    for (var i = 0; i <= steps; i++){
+      var p = i / 240;
+      var t = T0 + p * Math.PI * 2;
+      var pt = heartPoint(t, 1);
+      var wobble = Math.sin(t * 9) * 1.1 * (1 - p * 0.3);
+      var s = scene();
+      var nx = -Math.sin(t), ny = Math.cos(t);
+      var x = pt.x + nx * wobble * (s.scale * 0.05);
+      var y = pt.y + ny * wobble * (s.scale * 0.05);
+      if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+    }
+    ctx.lineWidth = Math.max(2, W * 0.011);
+    ctx.stroke();
+    ctx.restore();
+  }
+
+  function drawSeed(dropProgress, gone){
+    if (gone) return;
+    var s = scene();
+    var startY = -30;
+    var endY = s.soilY - H * 0.01;
+    var ease = 1 - Math.pow(1 - dropProgress, 3);
+    var y = startY + (endY - startY) * ease;
+    var r = Math.max(5, W * 0.028);
+    ctx.save();
+    ctx.globalAlpha = dropProgress >= 1 ? Math.max(0, 1 - (dropProgress - 1) * 4) : 1;
+    var grad = ctx.createRadialGradient(s.cx - r*0.3, y - r*0.3, 1, s.cx, y, r);
+    grad.addColorStop(0, '#e7b76a');
+    grad.addColorStop(1, '#8a5a24');
+    ctx.beginPath();
+    ctx.ellipse(s.cx, y, r, r * 1.15, 0, 0, Math.PI * 2);
+    ctx.fillStyle = grad;
+    ctx.fill();
+    ctx.restore();
+  }
+
+  function drawIdleSeedPulse(t){
+    var s = scene();
+    var r = Math.max(6, W * 0.03);
+    var pulse = reduced ? 1 : 1 + Math.sin(t / 480) * 0.08;
+    ctx.save();
+    ctx.globalAlpha = 0.35;
+    ctx.beginPath();
+    ctx.arc(s.cx, s.soilY - H*0.01, r * 2.1 * pulse, 0, Math.PI * 2);
+    ctx.fillStyle = '#f2c14e';
+    ctx.filter = 'blur(1px)';
+    ctx.fill();
+    ctx.restore();
+    var grad = ctx.createRadialGradient(s.cx - r*0.3, s.soilY - H*0.01 - r*0.3, 1, s.cx, s.soilY - H*0.01, r);
+    grad.addColorStop(0, '#e7b76a');
+    grad.addColorStop(1, '#8a5a24');
+    ctx.beginPath();
+    ctx.ellipse(s.cx, s.soilY - H*0.01, r * pulse, r * 1.15 * pulse, 0, 0, Math.PI * 2);
+    ctx.fillStyle = grad;
+    ctx.fill();
+  }
+
+  // fireflies
+  var fireflies = [];
+  for (var f = 0; f < 8; f++){
+    fireflies.push({
+      seed: f,
+      speed: 0.4 + seededRandom(f * 2.2) * 0.5,
+      offset: seededRandom(f * 5.1) * 1000
+    });
+  }
+  function drawFireflies(t){
+    if (reduced) return;
+    ctx.save();
+    for (var i = 0; i < fireflies.length; i++){
+      var fl = fireflies[i];
+      var tt = (t * 0.00006 * fl.speed) + fl.offset;
+      var x = W * (0.15 + 0.7 * (0.5 + 0.5 * Math.sin(tt * 1.3 + fl.seed)));
+      var y = H * (0.08 + 0.35 * (0.5 + 0.5 * Math.cos(tt * 1.7 + fl.seed * 2)));
+      var glow = 0.25 + 0.35 * (0.5 + 0.5 * Math.sin(tt * 4 + fl.seed));
+      ctx.beginPath();
+      ctx.globalAlpha = glow;
+      ctx.fillStyle = '#ffe08a';
+      ctx.arc(x, y, Math.max(1.2, W * 0.006), 0, Math.PI * 2);
+      ctx.fill();
+    }
+    ctx.restore();
+  }
+
+  // ---- phase machine ----
+  // idle -> seedFalling -> waitingWater -> watering -> growing -> blooming -> done
+  var phase = 'idle';
+  var phaseStart = 0;
+  var raf = null;
+  var phraseTimer = null;
+  var phraseIdx = 0;
+
+  var SEED_DUR = 1400;
+  var WATER_DUR = 1700;
+  var VINE_DUR = 9000;
+  var BLOOM_TOTAL = 8200;
+  var BLOOM_DUR = 600;
+  var BLOOM_STAGGER = (BLOOM_TOTAL - BLOOM_DUR) / Math.max(1, flowers.length - 1);
+
+  function clamp01(v){ return Math.max(0, Math.min(1, v)); }
+  function easeOutBack(x){
+    var c1 = 1.7, c3 = c1 + 1;
+    return 1 + c3 * Math.pow(x - 1, 3) + c1 * Math.pow(x - 1, 2);
+  }
+
+  function enterPhase(next){
+    phase = next;
+    phaseStart = performance.now();
+  }
+
+  function render(now){
+    ctx.clearRect(0, 0, W, H);
+    var moist = (phase === 'idle' || phase === 'seedFalling' || phase === 'waitingWater') ? 0 : 1;
+    drawSoil(moist);
+
+    if (phase === 'idle'){
+      drawIdleSeedPulse(now);
+      drawFireflies(now);
+      raf = requestAnimationFrame(render);
+      return;
+    }
+
+    var pe = now - phaseStart; // phase-elapsed
+
+    if (phase === 'seedFalling'){
+      drawSeed(clamp01(pe / SEED_DUR), false);
+      if (pe >= SEED_DUR){
+        enterPhase('waitingWater');
+        hint.textContent = 'dale un poco de agua';
+        waterBtn.hidden = false;
+        requestAnimationFrame(function(){ waterBtn.classList.add('is-visible'); });
+      }
+    } else if (phase === 'waitingWater'){
+      drawSeed(1, false);
+    } else if (phase === 'watering'){
+      drawSeed(1, false);
+      drawDroplets(pe);
+      if (pe >= WATER_DUR){
+        enterPhase('growing');
+        hint.textContent = 'está creciendo...';
+      }
+    } else if (phase === 'growing'){
+      var leafP = clamp01(pe / 900);
+      var vineP = clamp01((pe - 400) / VINE_DUR);
+      drawVine(vineP);
+      if (leafP > 0){
+        var s = scene();
+        var baseX = s.cx, baseY = s.soilY - H*0.012;
+        ctx.save();
+        ctx.globalAlpha = leafP;
+        var scl = 0.5 + 0.5 * leafP;
+        ctx.translate(baseX, baseY);
+        ctx.scale(scl, scl);
+        ctx.translate(-baseX, -baseY);
+        drawLeaf(baseX - 4, baseY, W * 0.05, -0.5, false);
+        drawLeaf(baseX + 4, baseY, W * 0.05, -0.5, true);
+        ctx.restore();
+      }
+      drawSeed(1, pe > 700);
+      if (vineP >= 1){
+        enterPhase('blooming');
+        startPhrases();
+      }
+    } else if (phase === 'blooming' || phase === 'done'){
+      drawVine(1);
+      var doneCount = 0;
+      var s2 = scene();
+      var bpe = phase === 'done' ? BLOOM_TOTAL + BLOOM_DUR : pe;
+      for (var i = 0; i < flowers.length; i++){
+        var fl = flowers[i];
+        var fStart = fl.delayOrder * BLOOM_STAGGER;
+        var fp = clamp01((bpe - fStart) / BLOOM_DUR);
+        if (fp > 0){
+          var pt = heartPoint(fl.t, fl.ring);
+          var r = s2.scale * (fl.ring > 0.5 ? 1.15 : 0.95) * fl.size;
+          drawFlower(pt.x, pt.y, r, fl.rot, easeOutBack(fp));
+        }
+        if (fp >= 1) doneCount++;
+      }
+      if (phase === 'blooming' && doneCount === flowers.length){
+        stopPhrases();
+        enterPhase('done');
+        setTimeout(revealLetter, 700);
+      }
+    }
+
+    drawFireflies(now);
+    raf = requestAnimationFrame(render);
+  }
+
+  function startPhrases(){
+    hint.classList.remove('is-hidden');
+    showNextPhrase();
+    phraseTimer = setInterval(showNextPhrase, 1900);
+  }
+  function showNextPhrase(){
+    hint.classList.add('is-hidden');
+    setTimeout(function(){
+      hint.textContent = PHRASES[phraseIdx % PHRASES.length];
+      phraseIdx++;
+      hint.classList.remove('is-hidden');
+    }, 420);
+  }
+  function stopPhrases(){
+    if (phraseTimer){ clearInterval(phraseTimer); phraseTimer = null; }
+  }
+
+  function revealLetter(){
+    letter.classList.add('is-visible');
+    letter.setAttribute('aria-hidden', 'false');
+    hint.classList.add('is-hidden');
+  }
+
+  function drawFinishedGarden(){
+    ctx.clearRect(0, 0, W, H);
+    drawSoil(1);
+    drawVine(1);
+    var s = scene();
+    for (var i = 0; i < flowers.length; i++){
+      var fl = flowers[i];
+      var pt = heartPoint(fl.t, fl.ring);
+      var r = s.scale * (fl.ring > 0.5 ? 1.15 : 0.95) * fl.size;
+      drawFlower(pt.x, pt.y, r, fl.rot, 1);
+    }
+  }
+
+  function start(){
+    if (phase !== 'idle') return;
+    if (reduced){
+      phase = 'done';
+      drawFinishedGarden();
+      revealLetter();
+      return;
+    }
+    enterPhase('seedFalling');
+    hint.textContent = '';
+    canvas.setAttribute('aria-label', 'Una semilla cae y empieza a crecer');
+  }
+
+  function onWater(){
+    if (phase !== 'waitingWater') return;
+    waterBtn.classList.remove('is-visible');
+    setTimeout(function(){ waterBtn.hidden = true; }, 500);
+    enterPhase('watering');
+    hint.textContent = 'así, poco a poco...';
+  }
+
+  function reset(){
+    if (raf) cancelAnimationFrame(raf);
+    stopPhrases();
+    phase = 'idle';
+    phraseIdx = 0;
+    letter.classList.remove('is-visible');
+    letter.setAttribute('aria-hidden', 'true');
+    waterBtn.classList.remove('is-visible');
+    waterBtn.hidden = true;
+    hint.classList.remove('is-hidden');
+    hint.textContent = 'toca la semilla para empezar';
+    canvas.setAttribute('aria-label', 'Escena interactiva: toca la semilla para verla crecer hasta formar un corazón de flores amarillas para mi miamor');
+    raf = requestAnimationFrame(render);
+  }
+
+  canvas.addEventListener('click', start);
+  canvas.addEventListener('keydown', function(e){
+    if (e.key === 'Enter' || e.key === ' '){
+      e.preventDefault();
+      start();
+    }
+  });
+  waterBtn.addEventListener('click', onWater);
+  replayBtn.addEventListener('click', reset);
+
+  window.addEventListener('resize', resize);
+  resize();
+  raf = requestAnimationFrame(render);
+})();
+</script>
